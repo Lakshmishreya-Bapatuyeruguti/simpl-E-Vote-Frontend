@@ -14,8 +14,16 @@ function HomeScreen() {
         content="Login as Organiser"
         path="/organizerdefault"
         color="yellow"
+        organizerlogin="true"
       />
-      <Button content="Login as Voter" path="/voterdefault" color="yellow" />
+      <Button
+        content="Login as Voter"
+        path="/voterdefault"
+        color="yellow"
+        forLogin="true"
+        forElectionList="true"
+        voterlogin="true"
+      />
       <Features />
     </div>
   );

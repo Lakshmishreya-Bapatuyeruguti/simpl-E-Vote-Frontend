@@ -4,7 +4,7 @@ function ElectionList(props) {
   return (
     <div>
       <div className=" mt-12 ml-20 w-full">
-        <div className="mt-6 w-full h-20 px-4 bg-slate-100 flex justify-evenly rounded-lg">
+        <div className="mt-6 w-full h-20 px-4 bg-slate-50 flex justify-evenly rounded-lg shadow-md shadow-slate-300">
           <h1 className="mt-4 py-2  font-sans font-light intro text-2xl text-gray-600">
             Election Id: {props.id}
           </h1>
@@ -22,10 +22,18 @@ function ElectionList(props) {
             </h1>
           )}
           {props.status === "Ended" && (
-            <VoterButton content="Show Results" color="bg-green-600" />
+            <VoterButton
+              content="Show Results"
+              color="bg-green-400"
+              path="/electionresults"
+            />
           )}
           {props.status === "Active" && (
-            <VoterButton content="Start Voting" color="bg-yellow-300" />
+            <VoterButton
+              content="Start Voting"
+              color="bg-yellow-300"
+              path="/voters/voting"
+            />
           )}
         </div>
       </div>
