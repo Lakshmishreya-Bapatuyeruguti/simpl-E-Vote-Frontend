@@ -15,6 +15,7 @@ function HomeScreen() {
         path="/organizerdefault"
         color="yellow"
         organizerlogin="true"
+        forLogin="true"
       />
       <Button
         content="Login as Voter"

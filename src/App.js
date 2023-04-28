@@ -16,6 +16,9 @@ export const AppContext = createContext();
 function App() {
   const [connectedAccount, setConnectedAccount] = useState("");
   const [organizersList, setOrganizersList] = useState([]);
+  const [candidatesInfoList, setCandidatesInfoList] = useState([]);
+  const [candidatesResults, setCandidatesResults] = useState([]);
+  const [currentOrganizer, setCurrentOrganizer] = useState("");
   return (
     <div className="App">
       <AppContext.Provider
@@ -24,6 +27,12 @@ function App() {
           setConnectedAccount,
           organizersList,
           setOrganizersList,
+          candidatesInfoList,
+          setCandidatesInfoList,
+          currentOrganizer,
+          setCurrentOrganizer,
+          candidatesResults,
+          setCandidatesResults,
         }}
       >
         <BrowserRouter>

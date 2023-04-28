@@ -13,12 +13,14 @@ function ElectionsList() {
         </p>
       </div>
       {organizersList.map((organizer, key) => {
+        console.log(organizer.started);
         return (
           <ElectionList
             key={key}
             id={key + 1}
-            organizer={organizer}
-            status="Active"
+            organizer={organizer.organizer}
+            started={organizer.started}
+            ended={organizer.ended}
           />
         );
       })}

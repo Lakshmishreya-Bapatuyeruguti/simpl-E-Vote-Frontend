@@ -1,4 +1,5 @@
 import React from "react";
+import ShowResultsButton from "./ShowResultsButton";
 import VoterButton from "./VoterButton";
 function ElectionList(props) {
   return (
@@ -11,28 +12,38 @@ function ElectionList(props) {
           <h1 className="mt-4 py-2  font-sans font-light intro text-2xl text-gray-600">
             Organizer: {props.organizer}
           </h1>
-          {props.status === "Ended" && (
+          {console.log(props.ended, "........", props.started)}
+          {props.ended && (
             <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl text-red-700">
-              {props.status}
+              Ended
             </h1>
           )}
-          {props.status === "Active" && (
+          {props.started && (
             <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl text-green-700">
-              {props.status}
+              Active
             </h1>
           )}
-          {props.status === "Ended" && (
+
+          {props.ended && (
             <VoterButton
               content="Show Results"
               color="bg-green-400"
               path="/electionresults"
+              results="true"
+              organizer={props.organizer}
             />
+            // <ShowResultsButton
+            //   organizer={props.organizer}
+            //   path="/electionresults"
+            // />
           )}
-          {props.status === "Active" && (
+          {props.started && (
             <VoterButton
               content="Start Voting"
               color="bg-yellow-300"
               path="/voters/voting"
+              showcandidatelist="true"
+              organizer={props.organizer}
             />
           )}
         </div>

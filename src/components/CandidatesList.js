@@ -1,6 +1,8 @@
-import React from "react";
+import { React, useContext } from "react";
 import CandidateList from "./CandidateList";
+import { AppContext } from "../App";
 function CandidatesList(props) {
+  const { candidatesInfoList, currentOrganizer } = useContext(AppContext);
   return (
     <div className=" w-2/3 ml-10 mb-16 ">
       <div className="  mt-2 ">
@@ -11,34 +13,20 @@ function CandidatesList(props) {
           {props.instruction}
         </p>
       </div>
-      <CandidateList
-        name="Test1"
-        address="0xFa45d5...45d"
-        party="XYZ"
-        votes={100}
-        results={props.results}
-      />
-      <CandidateList
-        name="Test2"
-        address="0xCa12d5...63j"
-        party="ABC"
-        votes={36}
-        results={props.results}
-      />
-      <CandidateList
-        name="Test3"
-        address="0xDa35d9...21h"
-        party="LMN"
-        votes={226}
-        results={props.results}
-      />
-      <CandidateList
-        name="Test4"
-        address="0xWg15h6...77d"
-        party="JKL"
-        votes={65}
-        results={props.results}
-      />
+      {candidatesInfoList.map((candidate, key) => {
+        console.log("11111 vvvvv", currentOrganizer);
+        return (
+          <CandidateList
+            key={key}
+            name={candidate.name}
+            address={candidate.address}
+            party={candidate.party}
+            votes={candidate.votes}
+            results={props.results}
+            organizer={currentOrganizer}
+          />
+        );
+      })}
     </div>
   );
 }
