@@ -14,7 +14,6 @@ function CandidatesList(props) {
         </p>
       </div>
       {candidatesInfoList.map((candidate, key) => {
-        console.log("11111 vvvvv", currentOrganizer);
         return (
           <CandidateList
             key={key}
