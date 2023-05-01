@@ -21,6 +21,7 @@ function ElectionsList() {
             organizer={organizer.organizer}
             started={organizer.started}
             ended={organizer.ended}
+            default="false"
           />
         );
       })}

@@ -13,7 +13,7 @@ function ScheduleElection() {
         <img
           src={schedulepic}
           alt="candidatesdemopic"
-          className="  object-fill  h-80 mt-44  ml-80"
+          className="  object-fill  h-80 mt-44  ml-40 mb-28"
         />
       </div>
     </div>

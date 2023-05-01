@@ -1,5 +1,4 @@
 import React from "react";
-import ShowResultsButton from "./ShowResultsButton";
 import VoterButton from "./VoterButton";
 function ElectionList(props) {
   return (
@@ -32,12 +31,16 @@ function ElectionList(props) {
               results="true"
               organizer={props.organizer}
             />
-            // <ShowResultsButton
-            //   organizer={props.organizer}
-            //   path="/electionresults"
-            // />
           )}
-          {props.started && (
+          {props.started && props.default === "true" && (
+            <VoterButton
+              content="End Election"
+              color="bg-red-400"
+              electionends="true"
+            />
+          )}
+
+          {props.started && props.default === "false" && (
             <VoterButton
               content="Start Voting"
               color="bg-yellow-300"

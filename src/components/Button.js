@@ -4,11 +4,18 @@ import { ethers } from "ethers";
 import { AppContext } from "../App";
 import { ABI } from "../Abi";
 function Button(props) {
-  const { connectedAccount, setConnectedAccount, setOrganizersList } =
-    useContext(AppContext);
+  const {
+    connectedAccount,
+    setConnectedAccount,
+    setOrganizersList,
+    name,
+    age,
+    address,
+    candidateParty,
+  } = useContext(AppContext);
   const navigate = useNavigate();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0x54E7f25f0207F451b84498289b2931A60860765e";
+  const contractAddress = "0xA16208ca3ae4427135a6a75ECe3e7AAFC32a8ab7";
   // Function To cconnect
   async function connect() {
     try {
@@ -106,18 +113,52 @@ function Button(props) {
       console.log("Err at displayOrganizers()", error);
     }
   }
-  // async function addOrganizer() {
-  //   try {
-  //     await provider.send("eth_requestAccounts", []);
-  //     const signer = provider.getSigner();
-  //     const contract = new ethers.Contract(contractAddress, ABI, signer);
-  //     await contract.addOrganizer(await signer.getAddress());
-  //     setConnectedAccount(await signer.getAddress());
-  //     navigateTo();
-  //   } catch (error) {
-  //     console.log("Err at addOrganizer()", error);
-  //   }
-  // }
+  async function addOrganizer() {
+    try {
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      await contract.addOrganizer(await signer.getAddress());
+      setConnectedAccount(await signer.getAddress());
+      navigateTo();
+    } catch (error) {
+      console.log("Err at addOrganizer()", error);
+    }
+  }
+  async function addCandidate() {
+    try {
+      console.log("..................ikkada");
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      console.log("..................ikkada22");
+      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      console.log(name, age, candidateParty, address, connectedAccount);
+      await contract.setCandidate(
+        name,
+        age,
+        candidateParty,
+        address,
+        connectedAccount
+      );
+      console.log("..................ikkada33");
+      navigateTo();
+    } catch (error) {
+      console.log("Err at add Candidate()", error);
+    }
+  }
+  async function electionBegins() {
+    try {
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      await contract.startVoting(connectedAccount);
+
+      navigateTo();
+    } catch (error) {
+      console.log("Err at electionBegins()", error);
+    }
+  }
   return (
     <button
       className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-32 text-center shadow-md shadow-yellow-400 font-serif  `}
@@ -131,9 +172,18 @@ function Button(props) {
         if (props.voterlogin === "true") {
           displayOrganizers();
         }
-        // if (props.organizerlogin === "true") {
-        //   addOrganizer();
-        // }
+        if (props.organizerlogin === "true") {
+          displayOrganizers();
+        }
+        if (props.asorganizer === "true") {
+          addOrganizer();
+        }
+        if (props.addcandidate === "true") {
+          addCandidate();
+        }
+        if (props.confirmstart === "true") {
+          electionBegins();
+        }
       }}
     >
       {props.content}

@@ -2,7 +2,7 @@ import "./App.css";
 import HomeScreen from "./screens/HomeScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LogoandTitle from "./components/LogoandTitle";
-import OrganizerDefaultScreen from "./screens/OrganizerDefaultScreen";
+import AddCandidatesScreen from "./screens/AddCandidatesScreen";
 import VotersDefaultScreen from "./screens/VotersDefaultScreen";
 import Footer from "./components/Footer";
 import ScheduleElection from "./screens/ScheduleElection";
@@ -11,6 +11,7 @@ import VotingScreen from "./screens/VotingScreen";
 import ResultsScreen from "./screens/ResultsScreen";
 import ConfirmationScreen from "./screens/ConfirmationScreen";
 import Test from "./screens/Test";
+import OrganizerDefaultScreen from "./screens/OrganizerDefaultScreen";
 export const AppContext = createContext();
 
 function App() {
@@ -19,6 +20,10 @@ function App() {
   const [candidatesInfoList, setCandidatesInfoList] = useState([]);
   const [candidatesResults, setCandidatesResults] = useState([]);
   const [currentOrganizer, setCurrentOrganizer] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState(18);
+  const [address, setAddress] = useState("");
+  const [candidateParty, setCandidateParty] = useState("");
   return (
     <div className="App">
       <AppContext.Provider
@@ -33,6 +38,14 @@ function App() {
           setCurrentOrganizer,
           candidatesResults,
           setCandidatesResults,
+          name,
+          setName,
+          age,
+          setAge,
+          address,
+          setAddress,
+          candidateParty,
+          setCandidateParty,
         }}
       >
         <BrowserRouter>
@@ -42,6 +55,14 @@ function App() {
             <Route
               path="/organizerdefault"
               element={<OrganizerDefaultScreen />}
+            />
+            <Route
+              path="/organizerdefault/addcandidates"
+              element={<AddCandidatesScreen />}
+            />
+            <Route
+              path="/organizerdefault/addsomecandidates"
+              element={<AddCandidatesScreen />}
             />
             <Route path="/voterdefault" element={<VotersDefaultScreen />} />
             <Route

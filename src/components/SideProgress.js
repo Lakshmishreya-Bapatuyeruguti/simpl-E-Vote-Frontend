@@ -7,7 +7,7 @@ function SideProgress(props) {
       <div className=" h-80  font-serif mr-4 mt-8">
         <SideButton content="Add Candidates" color="bg-yellow-300" />
         <div className="h-20 w-0.5 bg-black ml-64 shadow-lg shadow-black"></div>
-        <SideButton content="Schedule Election" color={props.color} />
+        <SideButton content="Start Election" color={props.color} />
         <div className="h-20 w-0.5 bg-black ml-64 shadow-md shadow-black"></div>
         <SideButton content="Confirm Election" color="bg-gray-400" />
       </div>
