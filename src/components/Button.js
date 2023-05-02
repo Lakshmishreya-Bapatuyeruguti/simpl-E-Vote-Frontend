@@ -7,7 +7,8 @@ function Button(props) {
   const {
     connectedAccount,
     setConnectedAccount,
-    setOrganizersList,
+    setOrganizersListMumbai,
+    setOrganizersListSepolia,
     name,
     age,
     address,
@@ -15,7 +16,7 @@ function Button(props) {
   } = useContext(AppContext);
   const navigate = useNavigate();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0xA16208ca3ae4427135a6a75ECe3e7AAFC32a8ab7";
+  const contractAddress = "0x30C74703137d506753A265F2f73485162F9bEc65";
   // Function To cconnect
   async function connect() {
     try {
@@ -36,7 +37,7 @@ function Button(props) {
       console.log("Err at navigateTo()", error);
     }
   }
-
+  // ================================================================
   // function checkSchedule() {
   //   try {
   //     const startDateTimeStr = props.startdate + " " + props.starttime;
@@ -91,10 +92,15 @@ function Button(props) {
   //   }
   // }
   // ================================================================
+
+  // Displaying Organizers of Particular Network
   async function displayOrganizers() {
     try {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
+      const network = await provider.getNetwork();
+      const networkId = network.chainId;
+      console.log("Network Id:", networkId);
       const contract = new ethers.Contract(contractAddress, ABI, signer);
       let length = await contract.organizersCount();
 
@@ -106,17 +112,26 @@ function Button(props) {
           organizer
         );
         console.log(started, ended, organizer);
-        recievedOrganizersList.push({ organizer, started, ended });
+        recievedOrganizersList.push({ organizer, started, ended, networkId });
       }
-      setOrganizersList(recievedOrganizersList);
+      if (networkId === 11155111) {
+        setOrganizersListSepolia(recievedOrganizersList);
+      } else {
+        setOrganizersListMumbai(recievedOrganizersList);
+      }
     } catch (error) {
       console.log("Err at displayOrganizers()", error);
     }
   }
+  // Adding Organizers to Particular Network
   async function addOrganizer() {
     try {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
+      const network = await provider.getNetwork();
+      const networkId = network.chainId;
+      console.log("Network Id:", networkId);
+
       const contract = new ethers.Contract(contractAddress, ABI, signer);
       await contract.addOrganizer(await signer.getAddress());
       setConnectedAccount(await signer.getAddress());
@@ -125,12 +140,11 @@ function Button(props) {
       console.log("Err at addOrganizer()", error);
     }
   }
+  // Adding Candidates to Particular Organizer's Election
   async function addCandidate() {
     try {
-      console.log("..................ikkada");
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
-      console.log("..................ikkada22");
       const contract = new ethers.Contract(contractAddress, ABI, signer);
       console.log(name, age, candidateParty, address, connectedAccount);
       await contract.setCandidate(
@@ -140,12 +154,13 @@ function Button(props) {
         address,
         connectedAccount
       );
-      console.log("..................ikkada33");
+
       navigateTo();
     } catch (error) {
       console.log("Err at add Candidate()", error);
     }
   }
+  // Election Start
   async function electionBegins() {
     try {
       await provider.send("eth_requestAccounts", []);
@@ -159,6 +174,7 @@ function Button(props) {
       console.log("Err at electionBegins()", error);
     }
   }
+
   return (
     <button
       className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-32 text-center shadow-md shadow-yellow-400 font-serif  `}

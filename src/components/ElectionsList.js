@@ -2,8 +2,10 @@ import { React, useContext } from "react";
 import ElectionList from "./ElectionList";
 import { AppContext } from "../App";
 function ElectionsList() {
-  const { organizersList } = useContext(AppContext);
-
+  const { organizersListMumbai, organizersListSepolia } =
+    useContext(AppContext);
+  console.log("mumbaiiii...", organizersListMumbai);
+  console.log("sepoliaaa...", organizersListSepolia);
   return (
     <div className=" w-2/3 ml-10 mb-16 ">
       <div className="  mt-2 ">
@@ -12,7 +14,7 @@ function ElectionsList() {
           Start Voting in the listed elections that are active
         </p>
       </div>
-      {organizersList.map((organizer, key) => {
+      {organizersListMumbai.map((organizer, key) => {
         console.log(organizer.started);
         return (
           <ElectionList
@@ -21,6 +23,21 @@ function ElectionsList() {
             organizer={organizer.organizer}
             started={organizer.started}
             ended={organizer.ended}
+            networkId={organizer.networkId}
+            default="false"
+          />
+        );
+      })}
+      {organizersListSepolia.map((organizer, key) => {
+        console.log(organizer.started);
+        return (
+          <ElectionList
+            key={key}
+            id={key + 1}
+            organizer={organizer.organizer}
+            started={organizer.started}
+            ended={organizer.ended}
+            networkId={organizer.networkId}
             default="false"
           />
         );

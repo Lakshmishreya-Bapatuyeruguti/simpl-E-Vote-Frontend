@@ -16,7 +16,8 @@ export const AppContext = createContext();
 
 function App() {
   const [connectedAccount, setConnectedAccount] = useState("");
-  const [organizersList, setOrganizersList] = useState([]);
+  const [organizersListMumbai, setOrganizersListMumbai] = useState([]);
+  const [organizersListSepolia, setOrganizersListSepolia] = useState([]);
   const [candidatesInfoList, setCandidatesInfoList] = useState([]);
   const [candidatesResults, setCandidatesResults] = useState([]);
   const [currentOrganizer, setCurrentOrganizer] = useState("");
@@ -30,8 +31,10 @@ function App() {
         value={{
           connectedAccount,
           setConnectedAccount,
-          organizersList,
-          setOrganizersList,
+          organizersListMumbai,
+          setOrganizersListMumbai,
+          organizersListSepolia,
+          setOrganizersListSepolia,
           candidatesInfoList,
           setCandidatesInfoList,
           currentOrganizer,

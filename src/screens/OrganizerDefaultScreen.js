@@ -6,8 +6,9 @@ import { AppContext } from "../App";
 import ElectionList from "../components/ElectionList";
 
 function OrganizerDefaultScreen() {
-  const { organizersList, connectedAccount } = useContext(AppContext);
-
+  const { organizersListMumbai, connectedAccount, organizersListSepolia } =
+    useContext(AppContext);
+  const organizersList = [...organizersListMumbai, ...organizersListSepolia];
   let organizerFound = false;
 
   return (
@@ -35,12 +36,14 @@ function OrganizerDefaultScreen() {
                     started={organizer.started}
                     ended={organizer.ended}
                     default="true"
+                    networkId={organizer.networkId}
                   />
                 </div>
               );
             }
             return null;
           })}
+
           {!organizerFound && (
             <div className="mt-6 w-2/3 h-60 px-4 ml-60  rounded-full shadow-md shadow-slate-300 text-center">
               <h1 className="text-4xl font-sans mt-10 ml-20 intro py-4">
@@ -66,7 +69,7 @@ function OrganizerDefaultScreen() {
         <img
           src={organizerpic}
           alt="organizer pic"
-          className="  object-fill  h-96 mt-24 ml-32"
+          className="  object-fill  h-96 mt-24 ml-32 mb-32"
         />
       </div>
     </div>

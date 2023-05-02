@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React } from "react";
 import Login from "../components/Login";
 import CandidatesList from "../components/CandidatesList";
 import resultspic from "../pics/results.png";
@@ -17,7 +17,7 @@ function ResultsScreen() {
       <img
         src={resultspic}
         alt="voting pic"
-        className="  object-fill  h-80 mt-52  ml-36 "
+        className="  object-fill  h-80 mt-52  ml-36 mb-20 "
       />
     </div>
   );

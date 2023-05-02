@@ -12,7 +12,7 @@ function VoterButton(props) {
     currentOrganizer,
   } = useContext(AppContext);
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0xA16208ca3ae4427135a6a75ECe3e7AAFC32a8ab7";
+  const contractAddress = "0x30C74703137d506753A265F2f73485162F9bEc65";
 
   function navigateTo() {
     navigate(props.path);
