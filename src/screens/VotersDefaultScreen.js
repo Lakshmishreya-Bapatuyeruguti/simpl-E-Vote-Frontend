@@ -10,7 +10,7 @@ function VotersDefaultScreen() {
       <img
         src={voterpic}
         alt="candidatesdemopic"
-        className="  object-fill  h-80 mt-40  ml-36 mb-32"
+        className="  object-fill  h-80 mt-40  ml-36 mb-32 my-auto"
       />
     </div>
   );

@@ -5,23 +5,28 @@ function ElectionList(props) {
     <div>
       <div className=" mt-12 ml-20 w-full">
         <div className="mt-6 w-full h-20 px-4 bg-slate-50 flex justify-evenly rounded-lg shadow-md shadow-slate-300">
-          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
-            Election Id: {props.id}
+          <h1 className="mt-5 py-2  font-sans font-bold intro text-lg    text-gray-600">
+            Id: <span className="text-blue-900 font-light">{props.id}</span>
           </h1>
-          <h1 className="mt-5 py-2  font-sans font-light intro text-1xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
-            Organizer: {props.organizer}
+          <h1 className="mt-5 py-2  font-sans font-bold intro text-lg  text-gray-600">
+            Organizer:{" "}
+            <span className="text-blue-900 font-light">{props.organizer}</span>
           </h1>
-          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
-            Network: {props.networkId}
+          <h1 className="mt-5 py-2  font-sans font-bold  intro text-lg  text-gray-600">
+            Network:{" "}
+            <span className="text-blue-900 font-light">
+              {" "}
+              {props.networkId === 11155111 ? "Sepolia" : "Mumbai"}
+            </span>
           </h1>
           {console.log(props.ended, "........", props.started)}
           {props.ended && (
-            <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl text-red-700">
+            <h1 className="mt-5 py-2  font-sans font-bold intro text-lg text-red-700">
               Ended
             </h1>
           )}
           {props.started && (
-            <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-green-700">
+            <h1 className="mt-5 py-2  font-sans font-bold intro text-lg text-green-700">
               Active
             </h1>
           )}
@@ -32,14 +37,16 @@ function ElectionList(props) {
               color="bg-green-400"
               path="/electionresults"
               results="true"
+              id={props.id}
               organizer={props.organizer}
             />
           )}
           {props.started && props.default === "true" && (
             <VoterButton
               content="End Election"
-              color="bg-red-400"
+              color="bg-red-300"
               electionends="true"
+              id={props.id}
             />
           )}
 
@@ -50,6 +57,7 @@ function ElectionList(props) {
               path="/voters/voting"
               showcandidatelist="true"
               organizer={props.organizer}
+              id={props.id}
             />
           )}
         </div>

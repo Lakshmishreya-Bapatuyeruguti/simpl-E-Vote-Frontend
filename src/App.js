@@ -21,10 +21,12 @@ function App() {
   const [candidatesInfoList, setCandidatesInfoList] = useState([]);
   const [candidatesResults, setCandidatesResults] = useState([]);
   const [currentOrganizer, setCurrentOrganizer] = useState("");
+  const [currentOrganizerId, setCurrentOrganizerId] = useState(0);
   const [name, setName] = useState("");
   const [age, setAge] = useState(18);
   const [address, setAddress] = useState("");
   const [candidateParty, setCandidateParty] = useState("");
+
   return (
     <div className="App">
       <AppContext.Provider
@@ -39,6 +41,8 @@ function App() {
           setCandidatesInfoList,
           currentOrganizer,
           setCurrentOrganizer,
+          currentOrganizerId,
+          setCurrentOrganizerId,
           candidatesResults,
           setCandidatesResults,
           name,

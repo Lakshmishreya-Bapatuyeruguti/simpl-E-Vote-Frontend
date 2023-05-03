@@ -10,40 +10,58 @@ function OrganizerDefaultScreen() {
     useContext(AppContext);
   const organizersList = [...organizersListMumbai, ...organizersListSepolia];
   let organizerFound = false;
-
+  let count = 1;
   return (
     <div>
       <Login />
       <div className="flex w-full">
         <div className=" mt-24  w-2/3 ">
-          {organizersList.map((organizer, key) => {
-            if (organizer.organizer === connectedAccount) {
-              organizerFound = true;
-              return (
-                <div className=" m-auto">
-                  <div className="  mt-2 ">
-                    <h1 className="text-4xl font-sans mt-10 ml-20 intro">
-                      Hello Organiser
-                    </h1>
-                    <p className="text-1xl font-sans mt-2 ml-20 intro">
-                      Below is your election. Results can be seen once election
-                      is ended
-                    </p>
-                  </div>
-                  <ElectionList
-                    id={key + 1}
-                    organizer={organizer.organizer}
-                    started={organizer.started}
-                    ended={organizer.ended}
-                    default="true"
-                    networkId={organizer.networkId}
-                  />
-                </div>
-              );
-            }
-            return null;
-          })}
+          {organizersList.length > 0 &&
+            organizersList.map((organizer, key) => {
+              if (organizer.organizer === connectedAccount) {
+                organizerFound = true;
 
+                if (key >= 0 && count === 1) {
+                  count += 1;
+                  return (
+                    <div>
+                      <div className="  mt-2 ">
+                        <h1 className="text-4xl font-sans mt-10 ml-20 intro">
+                          Hello Organiser
+                        </h1>
+                        <p className="text-1xl font-sans mt-2 ml-20 intro">
+                          Below are your elections. Results can be seen once
+                          election is ended
+                        </p>
+                      </div>
+                      <div className=" m-auto">
+                        <ElectionList
+                          id={key + 1}
+                          organizer={organizer.organizer}
+                          started={organizer.started}
+                          ended={organizer.ended}
+                          default="true"
+                          networkId={organizer.networkId}
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <div className=" m-auto">
+                    <ElectionList
+                      id={key + 1}
+                      organizer={organizer.organizer}
+                      started={organizer.started}
+                      ended={organizer.ended}
+                      default="true"
+                      networkId={organizer.networkId}
+                    />
+                  </div>
+                );
+              }
+              return null;
+            })}
           {!organizerFound && (
             <div className="mt-6 w-2/3 h-60 px-4 ml-60  rounded-full shadow-md shadow-slate-300 text-center">
               <h1 className="text-4xl font-sans mt-10 ml-20 intro py-4">
@@ -66,6 +84,7 @@ function OrganizerDefaultScreen() {
             />
           </div>
         </div>
+
         <img
           src={organizerpic}
           alt="organizer pic"

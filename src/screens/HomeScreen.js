@@ -1,11 +1,15 @@
-import React from "react";
+import { React, useContext } from "react";
 import Button from "../components/Button";
 import Features from "../components/Features";
-
+import { AppContext } from "../App";
 import HomePic from "../components/HomePic";
 import Intro from "../components/Intro";
 
 function HomeScreen() {
+  const { networkChangedFlag } = useContext(AppContext);
+  if (networkChangedFlag) {
+    window.location.reload();
+  }
   return (
     <div>
       <Intro />

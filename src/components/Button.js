@@ -9,6 +9,8 @@ function Button(props) {
     setConnectedAccount,
     setOrganizersListMumbai,
     setOrganizersListSepolia,
+    organizersListMumbai,
+    organizersListSepolia,
     name,
     age,
     address,
@@ -16,7 +18,7 @@ function Button(props) {
   } = useContext(AppContext);
   const navigate = useNavigate();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0x30C74703137d506753A265F2f73485162F9bEc65";
+  const contractAddress = "0x290fDdc0B617FA428fc7EEb22d8716F7183c8284";
   // Function To cconnect
   async function connect() {
     try {
@@ -109,7 +111,8 @@ function Button(props) {
       for (let i = 0; i < length; i++) {
         let organizer = await contract.organizersList(i);
         const { started, ended } = await contract.checkStatusOfElection(
-          organizer
+          organizer,
+          i
         );
         console.log(started, ended, organizer);
         recievedOrganizersList.push({ organizer, started, ended, networkId });
@@ -131,10 +134,20 @@ function Button(props) {
       const network = await provider.getNetwork();
       const networkId = network.chainId;
       console.log("Network Id:", networkId);
-
+      let listSize;
+      if (networkId === 11155111) {
+        listSize = organizersListSepolia.length;
+      } else {
+        listSize = organizersListMumbai.length;
+      }
       const contract = new ethers.Contract(contractAddress, ABI, signer);
-      await contract.addOrganizer(await signer.getAddress());
+      const addOrgTx = await contract.addOrganizer(
+        await signer.getAddress(),
+        listSize
+      );
       setConnectedAccount(await signer.getAddress());
+      alert("You will soon be added as organizer. Wait till confirmation..!");
+      await addOrgTx.wait();
       navigateTo();
     } catch (error) {
       console.log("Err at addOrganizer()", error);
@@ -145,18 +158,35 @@ function Button(props) {
     try {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
+      const network = await provider.getNetwork();
+      const networkId = network.chainId;
+      console.log("Network Id:", networkId);
       const contract = new ethers.Contract(contractAddress, ABI, signer);
       console.log(name, age, candidateParty, address, connectedAccount);
-      await contract.setCandidate(
+      let listSize;
+      if (networkId === 11155111) {
+        listSize = organizersListSepolia.length;
+      } else {
+        listSize = organizersListMumbai.length;
+      }
+      if (!name || !age || !candidateParty || !address) {
+        return alert("Kindly fill all the candidate details....!");
+      }
+      const addCandidateTx = await contract.setCandidate(
         name,
         age,
         candidateParty,
         address,
-        connectedAccount
+        connectedAccount,
+        listSize
       );
-
+      alert("We are adding Candidate , Kindly Wait till Confirmation...!");
+      await addCandidateTx.wait();
       navigateTo();
+
+      alert("Candidate Added Successfully....!!");
     } catch (error) {
+      alert("Candidate already exists in same election....!!");
       console.log("Err at add Candidate()", error);
     }
   }
@@ -165,10 +195,22 @@ function Button(props) {
     try {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
-
+      const network = await provider.getNetwork();
+      const networkId = network.chainId;
+      console.log("Network Id:", networkId);
+      let listSize;
+      if (networkId === 11155111) {
+        listSize = organizersListSepolia.length;
+      } else {
+        listSize = organizersListMumbai.length;
+      }
       const contract = new ethers.Contract(contractAddress, ABI, signer);
-      await contract.startVoting(connectedAccount);
-
+      const startElectionTx = await contract.startVoting(
+        connectedAccount,
+        listSize
+      );
+      alert("Election is being started, Kindly Wait till Confirmation...!");
+      await startElectionTx.wait();
       navigateTo();
     } catch (error) {
       console.log("Err at electionBegins()", error);
