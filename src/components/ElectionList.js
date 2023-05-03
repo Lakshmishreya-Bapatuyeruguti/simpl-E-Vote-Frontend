@@ -5,13 +5,13 @@ function ElectionList(props) {
     <div>
       <div className=" mt-12 ml-20 w-full">
         <div className="mt-6 w-full h-20 px-4 bg-slate-50 flex justify-evenly rounded-lg shadow-md shadow-slate-300">
-          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl text-gray-600">
+          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
             Election Id: {props.id}
           </h1>
-          <h1 className="mt-5 py-2  font-sans font-light intro text-1xl text-gray-600">
+          <h1 className="mt-5 py-2  font-sans font-light intro text-1xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
             Organizer: {props.organizer}
           </h1>
-          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl text-gray-600">
+          <h1 className="mt-4 py-2  font-sans font-light intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-gray-600">
             Network: {props.networkId}
           </h1>
           {console.log(props.ended, "........", props.started)}
@@ -21,7 +21,7 @@ function ElectionList(props) {
             </h1>
           )}
           {props.started && (
-            <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl text-green-700">
+            <h1 className="mt-4 py-2  font-sans font-bold intro text-2xl 2xl:text-sm 2xl:font-bold 2xl:mt-6 text-green-700">
               Active
             </h1>
           )}
