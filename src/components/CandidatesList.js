@@ -1,10 +1,11 @@
 import { React, useContext } from "react";
 import CandidateList from "./CandidateList";
 import { AppContext } from "../App";
+import votingpic from "../pics/voting.png";
 function CandidatesList(props) {
   const { candidatesInfoList, currentOrganizer } = useContext(AppContext);
   return (
-    <div className=" w-2/3 ml-10 mb-16 ">
+    <div className=" w-5/6 ml-10 ">
       <div className="  mt-2 ">
         <h1 className="text-4xl font-sans mt-10 ml-20 intro">
           {props.greeting}
@@ -15,15 +16,22 @@ function CandidatesList(props) {
       </div>
       {candidatesInfoList.map((candidate, key) => {
         return (
-          <CandidateList
-            key={key}
-            name={candidate.name}
-            address={candidate.address}
-            party={candidate.party}
-            votes={candidate.votes}
-            results={props.results}
-            organizer={currentOrganizer}
-          />
+          <div className="flex w-full">
+            <CandidateList
+              key={key}
+              name={candidate.name}
+              address={candidate.address}
+              party={candidate.party}
+              votes={candidate.votes}
+              results={props.results}
+              organizer={currentOrganizer}
+            />
+            <img
+              src={votingpic}
+              alt="voting pic"
+              className="  object-fill  h-20 ml-40  mt-12 "
+            />
+          </div>
         );
       })}
     </div>

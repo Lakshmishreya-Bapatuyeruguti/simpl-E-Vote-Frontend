@@ -5,7 +5,6 @@ import { AppContext } from "../App";
 import { ABI } from "../Abi";
 function VoterButton(props) {
   const navigate = useNavigate();
-  let organizerId;
   const {
     connectedAccount,
     setCandidatesInfoList,
@@ -16,10 +15,11 @@ function VoterButton(props) {
   } = useContext(AppContext);
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contractAddress = "0x290fDdc0B617FA428fc7EEb22d8716F7183c8284";
-
+  //  Navigate Function
   function navigateTo() {
     navigate(props.path);
   }
+  // Displaying Candidates of particular election
   async function showCandidatesDetails(orgId) {
     try {
       setCurrentOrganizer(props.organizer);
@@ -60,15 +60,12 @@ function VoterButton(props) {
       console.log("Err at showCandidatesDetails()", error);
     }
   }
-
+  // Voter adding vote  to partcular candidate
   async function addVote() {
-    console.log("Success1");
     try {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(contractAddress, ABI, signer);
-      console.log("Success2");
-      console.log(currentOrganizer, "id.......", organizerId);
       const voteToTx = await contract.voteTo(
         props.candidate,
         currentOrganizer,
@@ -83,6 +80,7 @@ function VoterButton(props) {
       alert("You are not allowed to vote");
     }
   }
+  // Showing Results Of Particular Election
   async function showResults(orgId) {
     try {
       setCurrentOrganizer(props.organizer);
@@ -118,6 +116,7 @@ function VoterButton(props) {
       console.log("Err at showResult()", error);
     }
   }
+  // Election End
   async function electionEnds(orgId) {
     try {
       await provider.send("eth_requestAccounts", []);
@@ -138,22 +137,16 @@ function VoterButton(props) {
   }
   return (
     <div>
-      {" "}
       <button
-        className={`rounded-lg ${props.color} h-12 w-40 text-2xl mt-4  text-center shadow-md shadow-gray-500 font-serif 2xl:h-10 2xl:w-30`}
+        className={`rounded-lg ${props.color} h-12 w-40 text-2xl mt-4  text-center shadow-md shadow-gray-500 font-serif 2xl:h-10 2xl:w-30 ${props.colorhover} ${props.textcolor}`}
         onClick={() => {
           if (props.showcandidatelist === "true") {
-            console.log(props.organizer);
-            console.log("idddddddddddddddddddddddddddddddddddd", props.id);
             showCandidatesDetails(props.id);
           }
           if (props.vote === "true") {
-            console.log("trueeeee");
             addVote();
           }
           if (props.results === "true") {
-            console.log(props.organizer);
-            console.log(props.path);
             showResults(props.id);
           }
           if (props.electionends === "true") {

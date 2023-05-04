@@ -15,11 +15,12 @@ function Button(props) {
     age,
     address,
     candidateParty,
+    setIsLoading,
   } = useContext(AppContext);
   const navigate = useNavigate();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contractAddress = "0x290fDdc0B617FA428fc7EEb22d8716F7183c8284";
-  // Function To cconnect
+  // Function To connect
   async function connect() {
     try {
       await provider.send("eth_requestAccounts", []);
@@ -98,15 +99,15 @@ function Button(props) {
   // Displaying Organizers of Particular Network
   async function displayOrganizers() {
     try {
+      setIsLoading(true);
       await provider.send("eth_requestAccounts", []);
+
       const signer = provider.getSigner();
+      setConnectedAccount(await signer.getAddress());
       const network = await provider.getNetwork();
       const networkId = network.chainId;
-      console.log("Network Id:", networkId);
       const contract = new ethers.Contract(contractAddress, ABI, signer);
       let length = await contract.organizersCount();
-
-      console.log(length);
       let recievedOrganizersList = [];
       for (let i = 0; i < length; i++) {
         let organizer = await contract.organizersList(i);
@@ -114,18 +115,22 @@ function Button(props) {
           organizer,
           i
         );
-        console.log(started, ended, organizer);
         recievedOrganizersList.push({ organizer, started, ended, networkId });
       }
       if (networkId === 11155111) {
-        setOrganizersListSepolia(recievedOrganizersList);
+        await setOrganizersListSepolia(recievedOrganizersList);
       } else {
-        setOrganizersListMumbai(recievedOrganizersList);
+        await setOrganizersListMumbai(recievedOrganizersList);
       }
+
+      navigateTo();
+      setIsLoading(false);
     } catch (error) {
+      alert("Errrrrr");
       console.log("Err at displayOrganizers()", error);
     }
   }
+
   // Adding Organizers to Particular Network
   async function addOrganizer() {
     try {
@@ -133,7 +138,6 @@ function Button(props) {
       const signer = provider.getSigner();
       const network = await provider.getNetwork();
       const networkId = network.chainId;
-      console.log("Network Id:", networkId);
       let listSize;
       if (networkId === 11155111) {
         listSize = organizersListSepolia.length;
@@ -160,9 +164,7 @@ function Button(props) {
       const signer = provider.getSigner();
       const network = await provider.getNetwork();
       const networkId = network.chainId;
-      console.log("Network Id:", networkId);
       const contract = new ethers.Contract(contractAddress, ABI, signer);
-      console.log(name, age, candidateParty, address, connectedAccount);
       let listSize;
       if (networkId === 11155111) {
         listSize = organizersListSepolia.length;
@@ -183,7 +185,6 @@ function Button(props) {
       alert("We are adding Candidate , Kindly Wait till Confirmation...!");
       await addCandidateTx.wait();
       navigateTo();
-
       alert("Candidate Added Successfully....!!");
     } catch (error) {
       alert("Candidate already exists in same election....!!");
@@ -197,7 +198,6 @@ function Button(props) {
       const signer = provider.getSigner();
       const network = await provider.getNetwork();
       const networkId = network.chainId;
-      console.log("Network Id:", networkId);
       let listSize;
       if (networkId === 11155111) {
         listSize = organizersListSepolia.length;
@@ -219,7 +219,7 @@ function Button(props) {
 
   return (
     <button
-      className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-32 text-center shadow-md shadow-yellow-400 font-serif  `}
+      className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-16 mr-12 text-center shadow-md shadow-yellow-400 font-serif hover:bg-yellow-200 `}
       onClick={() => {
         if (props.forLogin === "true") {
           connect();

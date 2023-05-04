@@ -1,8 +1,9 @@
 import React from "react";
 import VoterButton from "./VoterButton";
+
 function CandidateList(props) {
   return (
-    <div>
+    <div className=" w-full">
       <div className=" mt-12 ml-20 w-full">
         <div className="mt-6 w-full h-20 px-4 bg-slate-50 flex justify-evenly rounded-lg shadow-md shadow-slate-300">
           <h1 className="mt-4 py-2  font-sans font-light intro text-lg text-blue-900 ">
@@ -25,8 +26,8 @@ function CandidateList(props) {
               color="bg-yellow-300"
               vote="true"
               candidate={props.address}
-              id={props.id}
               path="/votingconfirmation"
+              colorhover="bg-yellow-200"
             />
           )}
         </div>

@@ -26,9 +26,10 @@ function App() {
   const [age, setAge] = useState(18);
   const [address, setAddress] = useState("");
   const [candidateParty, setCandidateParty] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="App">
+    <div className="App flex flex-col h-screen justify-between">
       <AppContext.Provider
         value={{
           connectedAccount,
@@ -53,6 +54,8 @@ function App() {
           setAddress,
           candidateParty,
           setCandidateParty,
+          isLoading,
+          setIsLoading,
         }}
       >
         <BrowserRouter>

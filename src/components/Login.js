@@ -14,7 +14,7 @@ function Login() {
     const signer = provider.getSigner();
     setConnectedAccount(await signer.getAddress());
   });
-  window.ethereum.on("networkChanged", async () => {
+  window.ethereum.on("chainChanged", async () => {
     window.location.reload();
     navigate("/");
   });

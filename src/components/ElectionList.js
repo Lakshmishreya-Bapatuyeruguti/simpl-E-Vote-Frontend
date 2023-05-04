@@ -2,7 +2,7 @@ import React from "react";
 import VoterButton from "./VoterButton";
 function ElectionList(props) {
   return (
-    <div>
+    <div className="w-full">
       <div className=" mt-12 ml-20 w-full">
         <div className="mt-6 w-full h-20 px-4 bg-slate-50 flex justify-evenly rounded-lg shadow-md shadow-slate-300">
           <h1 className="mt-5 py-2  font-sans font-bold intro text-lg    text-gray-600">
@@ -34,19 +34,23 @@ function ElectionList(props) {
           {props.ended && (
             <VoterButton
               content="Show Results"
-              color="bg-green-400"
+              color="bg-green-700"
               path="/electionresults"
               results="true"
               id={props.id}
+              colorhover="hover:bg-green-600"
               organizer={props.organizer}
+              textcolor="text-white"
             />
           )}
           {props.started && props.default === "true" && (
             <VoterButton
               content="End Election"
-              color="bg-red-300"
+              color="bg-red-600"
               electionends="true"
+              textcolor="text-white"
               id={props.id}
+              colorhover="hover:bg-red-500"
             />
           )}
 
@@ -58,6 +62,7 @@ function ElectionList(props) {
               showcandidatelist="true"
               organizer={props.organizer}
               id={props.id}
+              colorhover="hover:bg-yellow-200"
             />
           )}
         </div>
