@@ -1,13 +1,63 @@
-import { React, useContext } from "react";
+import { React, useContext, useEffect } from "react";
 import ElectionList from "./ElectionList";
 import { AppContext } from "../App";
 import voterpic from "../pics/voterpic.png";
 import Loading from "./Loading";
-
+import { ethers } from "ethers";
+import { ABI } from "../Abi";
 function ElectionsList() {
-  const { organizersListMumbai, organizersListSepolia, connectedAccount } =
-    useContext(AppContext);
+  const {
+    organizersListMumbai,
+    organizersListSepolia,
+    connectedAccount,
+    setIsLoading,
+    setConnectedAccount,
+    setOrganizersListMumbai,
+    setOrganizersListSepolia,
+  } = useContext(AppContext);
   const { isLoading } = useContext(AppContext);
+  useEffect(() => {
+    // Displaying Organizers of Particular Network
+    async function displayOrganizers() {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contractAddress = "0x4769F5F14ceEa40cFcFE961917b680C7c4090884";
+        setIsLoading(true);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        setConnectedAccount(await signer.getAddress());
+        localStorage.setItem("connected address", await signer.getAddress());
+        const network = await provider.getNetwork();
+        const networkId = network.chainId;
+        const contract = new ethers.Contract(contractAddress, ABI, signer);
+        let length = await contract.organizersCount();
+        let recievedOrganizersList = [];
+        for (let i = 0; i < length; i++) {
+          let organizer = await contract.organizersList(i);
+          const { started, ended } = await contract.checkStatusOfElection(
+            organizer,
+            i
+          );
+          recievedOrganizersList.push({ organizer, started, ended, networkId });
+        }
+        if (networkId === 11155111) {
+          await setOrganizersListSepolia(recievedOrganizersList);
+        } else {
+          await setOrganizersListMumbai(recievedOrganizersList);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        alert("Kindly cancel pending metamask request if any..!");
+        console.log("Err at displayOrganizers()", error);
+      }
+    }
+    displayOrganizers();
+  }, [
+    setConnectedAccount,
+    setIsLoading,
+    setOrganizersListMumbai,
+    setOrganizersListSepolia,
+  ]);
 
   return (
     <div className=" w-5/6 ml-10  ">
@@ -27,6 +77,12 @@ function ElectionsList() {
             if (organizer.organizer !== connectedAccount) {
               return (
                 <div className="flex w-full">
+                  <img
+                    src={voterpic}
+                    alt="candidatesdemopic"
+                    className=" object-fill  h-20 mt-12  ml-36 "
+                    key={`${key}-img`}
+                  />
                   <ElectionList
                     key={key}
                     id={key + 1}
@@ -35,11 +91,6 @@ function ElectionsList() {
                     ended={organizer.ended}
                     networkId={organizer.networkId}
                     default="false"
-                  />
-                  <img
-                    src={voterpic}
-                    alt="candidatesdemopic"
-                    className=" object-fill  h-20 mt-12  ml-36 "
                   />
                 </div>
               );
@@ -54,6 +105,7 @@ function ElectionsList() {
                     src={voterpic}
                     alt="candidatesdemopic"
                     className=" object-fill  h-14 mt-16  ml-32 "
+                    key={`${key}-img`}
                   />
                   <ElectionList
                     key={key}

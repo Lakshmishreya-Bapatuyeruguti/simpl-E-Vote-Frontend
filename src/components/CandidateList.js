@@ -1,4 +1,4 @@
-import React from "react";
+import { React } from "react";
 import VoterButton from "./VoterButton";
 
 function CandidateList(props) {

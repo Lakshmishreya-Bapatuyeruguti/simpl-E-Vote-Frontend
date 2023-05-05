@@ -14,10 +14,16 @@ function Login() {
     const signer = provider.getSigner();
     setConnectedAccount(await signer.getAddress());
   });
+
   window.ethereum.on("chainChanged", async () => {
     window.location.reload();
     navigate("/");
   });
+
+  const fromStorageAccount = localStorage.getItem("connected address");
+  const trimmedStorageAccount =
+    fromStorageAccount && fromStorageAccount.slice(0, 10);
+
   return (
     <div className="flex   mr-48  text-center shadow-sm shadow-yellow-300 rounded-md w-44 h-10 absolute top-8 right-0">
       <img
@@ -25,7 +31,9 @@ function Login() {
         alt="Login pic"
         className="object-scale-down h-8  m-auto"
       />
-      <p className="ml-0 m-auto">{trimmedConnectedAccount}....</p>
+      <p className="ml-0 m-auto">
+        {connectedAccount ? trimmedConnectedAccount : trimmedStorageAccount}....
+      </p>
     </div>
   );
 }

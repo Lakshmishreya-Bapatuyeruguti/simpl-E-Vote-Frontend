@@ -55,7 +55,7 @@ function CandidateInputs() {
           <Button
             content={"Add Candidate"}
             color="yellow"
-            path="/organizerdefault/addsomecandidates"
+            path="/organizerdefault/addcandidates"
             addcandidate="true"
           />
         </div>

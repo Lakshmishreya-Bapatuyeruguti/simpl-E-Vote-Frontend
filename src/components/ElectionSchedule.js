@@ -1,20 +1,9 @@
-import { React, useContext } from "react";
+import { React } from "react";
 import Button from "./Button";
-import { AppContext } from "../App";
-function ElectionSchedule() {
-  // const [startDate, setStartDate] = useState();
-  // const [startTime, setStartTime] = useState("12:00");
-  // const [endDate, setEndDate] = useState();
-  // const [endTime, setEndTime] = useState("12:00");
 
-  // const disablePastDate = () => {
-  //   const today = new Date();
-  //   const dd = String(today.getDate()).padStart(2, "0");
-  //   const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  //   const yyyy = today.getFullYear();
-  //   return yyyy + "-" + mm + "-" + dd;
-  const { connectedAccount } = useContext(AppContext);
-  // };
+function ElectionSchedule() {
+  const organizerConnected = localStorage.getItem("connected address");
+
   return (
     <div>
       <div className="w-full ml-16 mb-16  text-center mt-40  ">
@@ -29,8 +18,9 @@ function ElectionSchedule() {
             Click on Start Election to start the election. You can end the
             election anytime...!
           </p>
+
           <h1 className="mt-4   ml-20 px-2  font-sans font-light intro text-2xl text-gray-600">
-            Organizer: {connectedAccount}
+            Organizer: {organizerConnected}
           </h1>
         </div>
       </div>

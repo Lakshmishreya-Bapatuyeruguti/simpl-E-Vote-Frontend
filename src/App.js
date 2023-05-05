@@ -70,10 +70,6 @@ function App() {
               path="/organizerdefault/addcandidates"
               element={<AddCandidatesScreen />}
             />
-            <Route
-              path="/organizerdefault/addsomecandidates"
-              element={<AddCandidatesScreen />}
-            />
             <Route path="/voterdefault" element={<VotersDefaultScreen />} />
             <Route
               path="/organizerdefault/scheduleelection"

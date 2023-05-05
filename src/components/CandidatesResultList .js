@@ -4,13 +4,14 @@ import { AppContext } from "../App";
 import votingpic from "../pics/voting.png";
 import { ethers } from "ethers";
 import { ABI } from "../Abi";
-function CandidatesList(props) {
+
+function CandidatesResultList(props) {
   const { candidatesInfoList, currentOrganizer, setCandidatesInfoList } =
     useContext(AppContext);
 
   useEffect(() => {
-    // Displaying Candidates of particular election
-    async function showCandidatesDetails() {
+    // Showing Results Of Particular Election
+    async function showResults() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const contractAddress = "0x4769F5F14ceEa40cFcFE961917b680C7c4090884";
@@ -19,7 +20,6 @@ function CandidatesList(props) {
         setCandidatesInfoList([]);
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
-        localStorage.setItem("connected address", await signer.getAddress());
         const contract = new ethers.Contract(contractAddress, ABI, signer);
         const { totalCandidates } = await contract.displayCandidateDetails(
           organizerSelected,
@@ -27,7 +27,7 @@ function CandidatesList(props) {
           0
         );
         const length = totalCandidates.toNumber();
-        let candidatesList = [];
+        let candidatesResultsList = [];
         for (let index = 0; index < length; index++) {
           let { name, candidateAddress, party, votesGained } =
             await contract.displayCandidateDetails(
@@ -35,24 +35,20 @@ function CandidatesList(props) {
               organizerIdSelected - 1,
               index
             );
-          if (length > 0) {
-            candidatesList.push({
-              name: name,
-              address: candidateAddress,
-              party: party,
-              votes: votesGained,
-            });
-          }
+          console.log(name, candidateAddress, party, votesGained.toNumber());
+          candidatesResultsList.push({
+            name: name,
+            address: candidateAddress,
+            party: party,
+            votes: votesGained.toNumber(),
+          });
         }
-        if (length > 0) {
-          console.log("NOT EMPTY");
-          setCandidatesInfoList(candidatesList);
-        }
+        setCandidatesInfoList(candidatesResultsList);
       } catch (error) {
-        console.log("Err at showCandidatesDetails()", error);
+        console.log("Err at showResult()", error);
       }
     }
-    showCandidatesDetails();
+    showResults();
   }, [setCandidatesInfoList]);
 
   return (
@@ -80,6 +76,7 @@ function CandidatesList(props) {
               src={votingpic}
               alt="voting pic"
               className="  object-fill  h-20 ml-40  mt-12 "
+              key={`${key}-img`}
             />
           </div>
         );
@@ -88,4 +85,4 @@ function CandidatesList(props) {
   );
 }
 
-export default CandidatesList;
+export default CandidatesResultList;

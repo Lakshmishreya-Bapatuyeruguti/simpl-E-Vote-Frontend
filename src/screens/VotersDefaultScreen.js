@@ -6,7 +6,6 @@ function VotersDefaultScreen() {
   return (
     <div className="flex">
       <Login />
-
       <ElectionsList />
     </div>
   );
