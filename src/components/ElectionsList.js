@@ -21,7 +21,7 @@ function ElectionsList() {
     async function displayOrganizers() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contractAddress = "0x4769F5F14ceEa40cFcFE961917b680C7c4090884";
+        const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
         setIsLoading(true);
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();

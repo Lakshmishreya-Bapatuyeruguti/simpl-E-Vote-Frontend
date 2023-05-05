@@ -14,7 +14,7 @@ function VoterButton(props) {
   } = useContext(AppContext);
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0x4769F5F14ceEa40cFcFE961917b680C7c4090884";
+  const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
 
   //  Navigate Function
   function navigateTo() {
@@ -50,6 +50,7 @@ function VoterButton(props) {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(contractAddress, ABI, signer);
+      console.log(currentOrganizerId - 1);
       const endElectionTx = await contract.endVoting(
         connectedAccount,
         currentOrganizerId - 1
@@ -58,6 +59,7 @@ function VoterButton(props) {
       await endElectionTx.wait();
       alert("Your election is ended...!");
       navigateTo();
+      window.location.reload();
     } catch (error) {
       console.log("Err at electionEnds()", error);
     }

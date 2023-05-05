@@ -14,7 +14,7 @@ function CandidatesResultList(props) {
     async function showResults() {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contractAddress = "0x4769F5F14ceEa40cFcFE961917b680C7c4090884";
+        const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
         const organizerSelected = localStorage.getItem("current organizer");
         const organizerIdSelected = localStorage.getItem("current organizerId");
         setCandidatesInfoList([]);
@@ -30,7 +30,7 @@ function CandidatesResultList(props) {
         let candidatesResultsList = [];
         for (let index = 0; index < length; index++) {
           let { name, candidateAddress, party, votesGained } =
-            await contract.displayCandidateDetails(
+            await contract.displayCandidateResults(
               organizerSelected,
               organizerIdSelected - 1,
               index

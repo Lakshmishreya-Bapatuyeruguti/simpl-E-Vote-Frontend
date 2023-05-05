@@ -249,6 +249,50 @@ export const ABI = [
       },
       {
         internalType: "uint256",
+        name: "totalCandidates",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_organizer",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_id",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_index",
+        type: "uint256",
+      },
+    ],
+    name: "displayCandidateResults",
+    outputs: [
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "candidateAddress",
+        type: "address",
+      },
+      {
+        internalType: "string",
+        name: "party",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
         name: "votesGained",
         type: "uint256",
       },
