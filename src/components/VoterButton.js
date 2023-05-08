@@ -24,6 +24,7 @@ function VoterButton(props) {
       const { contract } = await contractInstance();
       const orgId = localStorage.getItem("current organizerId");
       console.log(props.candidate, currentOrganizer, connectedAccount, orgId);
+
       const voteToTx = await contract.voteTo(
         props.candidate,
         currentOrganizer,
