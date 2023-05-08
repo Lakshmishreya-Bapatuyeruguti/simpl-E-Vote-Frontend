@@ -1,8 +1,7 @@
 import { React, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
 import { AppContext } from "../App";
-import { ABI } from "../Abi";
+import contractInstance from "../contractInstance";
 function Button(props) {
   const {
     connectedAccount,
@@ -15,21 +14,6 @@ function Button(props) {
     candidateParty,
   } = useContext(AppContext);
   const navigate = useNavigate();
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
-
-  // Function To connect
-  async function connect() {
-    try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      setConnectedAccount(await signer.getAddress());
-      console.log(await signer.getAddress());
-      navigateTo();
-    } catch (error) {
-      console.log("Err at Connect() ", error);
-    }
-  }
 
   // Function To navigate
   function navigateTo() {
@@ -43,23 +27,16 @@ function Button(props) {
   // Function To add Organizer
   async function addOrganizer() {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const network = await provider.getNetwork();
-      const networkId = network.chainId;
+      const { contract, networkId, signerAddress } = await contractInstance();
       let listSize;
       if (networkId === 11155111) {
         listSize = organizersListSepolia.length;
       } else {
         listSize = organizersListMumbai.length;
       }
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
-      const addOrgTx = await contract.addOrganizer(
-        await signer.getAddress(),
-        listSize
-      );
+      const addOrgTx = await contract.addOrganizer(signerAddress, listSize);
       localStorage.setItem("listsize", listSize);
-      setConnectedAccount(await signer.getAddress());
+      setConnectedAccount(signerAddress);
       localStorage.setItem("connected address", connectedAccount);
       alert("You will soon be added as organizer. Wait till confirmation..!");
       await addOrgTx.wait();
@@ -72,10 +49,9 @@ function Button(props) {
   // Adding Candidates to Particular Organizer's Election
   async function addCandidate() {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+      const { contract } = await contractInstance();
       const organizerConnected = localStorage.getItem("connected address");
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
+
       let listSize = localStorage.getItem("listsize");
       if (!name || !age || !candidateParty || !address) {
         return alert("Kindly fill all the candidate details....!");
@@ -109,12 +85,10 @@ function Button(props) {
   // Election Start
   async function electionBegins() {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+      const { contract } = await contractInstance();
       const organizerConnected = localStorage.getItem("connected address");
       let listSize = localStorage.getItem("listsize");
       console.log(listSize);
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
       const startElectionTx = await contract.startVoting(
         organizerConnected,
         listSize
@@ -131,9 +105,6 @@ function Button(props) {
     <button
       className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-16 mr-12 text-center shadow-md shadow-yellow-400 font-serif hover:bg-yellow-200 `}
       onClick={() => {
-        if (props.forLogin === "true") {
-          connect();
-        }
         if (props.voterlogin === "true") {
           navigateTo();
         }

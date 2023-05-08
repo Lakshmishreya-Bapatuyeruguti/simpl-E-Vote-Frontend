@@ -2,8 +2,7 @@ import { React, useContext, useEffect } from "react";
 import CandidateList from "./CandidateList";
 import { AppContext } from "../App";
 import votingpic from "../pics/voting.png";
-import { ethers } from "ethers";
-import { ABI } from "../Abi";
+import contractInstance from "../contractInstance";
 function CandidatesList(props) {
   const { candidatesInfoList, currentOrganizer, setCandidatesInfoList } =
     useContext(AppContext);
@@ -12,15 +11,11 @@ function CandidatesList(props) {
     // Displaying Candidates of particular election
     async function showCandidatesDetails() {
       try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
+        const { contract, signerAddress } = await contractInstance();
         const organizerSelected = localStorage.getItem("current organizer");
         const organizerIdSelected = localStorage.getItem("current organizerId");
         setCandidatesInfoList([]);
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        localStorage.setItem("connected address", await signer.getAddress());
-        const contract = new ethers.Contract(contractAddress, ABI, signer);
+        localStorage.setItem("connected address", signerAddress);
         const { totalCandidates } = await contract.displayCandidateDetails(
           organizerSelected,
           organizerIdSelected - 1,

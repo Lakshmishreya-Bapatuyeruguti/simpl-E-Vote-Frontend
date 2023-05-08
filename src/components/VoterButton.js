@@ -1,8 +1,8 @@
 import { React, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
 import { AppContext } from "../App";
-import { ABI } from "../Abi";
+import contractInstance from "../contractInstance";
+
 function VoterButton(props) {
   const navigate = useNavigate();
   const {
@@ -13,9 +13,6 @@ function VoterButton(props) {
     setCurrentOrganizerId,
   } = useContext(AppContext);
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
-
   //  Navigate Function
   function navigateTo() {
     navigate(props.path);
@@ -24,9 +21,7 @@ function VoterButton(props) {
   // Voter adding vote  to partcular candidate
   async function addVote() {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      const { contract } = await contractInstance();
       const orgId = localStorage.getItem("current organizerId");
       console.log(props.candidate, currentOrganizer, connectedAccount, orgId);
       const voteToTx = await contract.voteTo(
@@ -47,9 +42,7 @@ function VoterButton(props) {
   // Election End
   async function electionEnds() {
     try {
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      const { contract } = await contractInstance();
       console.log(currentOrganizerId - 1);
       const endElectionTx = await contract.endVoting(
         connectedAccount,

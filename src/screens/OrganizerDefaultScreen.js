@@ -4,9 +4,8 @@ import Button from "../components/Button";
 import Login from "../components/Login";
 import { AppContext } from "../App";
 import ElectionList from "../components/ElectionList";
-import { ethers } from "ethers";
-import { ABI } from "../Abi";
 import Loading from "../components/Loading";
+import contractInstance from "../contractInstance";
 function OrganizerDefaultScreen() {
   const {
     organizersListMumbai,
@@ -26,18 +25,13 @@ function OrganizerDefaultScreen() {
     // Displaying Organizers of Particular Network
     async function displayOrganizers() {
       try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contractAddress = "0x5DC5C9A4A529899Dae832F3bcCfF9FAa6722d4eB";
+        const { contract, networkId, signerAddress } = await contractInstance();
         setIsLoading(true);
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        setConnectedAccount(await signer.getAddress());
-        localStorage.setItem("connected address", await signer.getAddress());
+        console.log(signerAddress);
+        setConnectedAccount(signerAddress);
+        localStorage.setItem("connected address", signerAddress);
         const fromStorageAccount = localStorage.getItem("connected address");
         setConnectedAccount(fromStorageAccount);
-        const network = await provider.getNetwork();
-        const networkId = network.chainId;
-        const contract = new ethers.Contract(contractAddress, ABI, signer);
         let length = await contract.organizersCount();
         let recievedOrganizersList = [];
         for (let i = 0; i < length; i++) {
