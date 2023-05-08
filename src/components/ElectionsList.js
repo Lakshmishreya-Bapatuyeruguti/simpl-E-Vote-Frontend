@@ -47,7 +47,7 @@ function ElectionsList() {
         }
         setIsLoading(false);
       } catch (error) {
-        alert("Kindly cancel pending metamask request if any..!");
+        alert("Kindly accept pending metamask request if any..!");
         console.log("Err at displayOrganizers()", error);
       }
     }
