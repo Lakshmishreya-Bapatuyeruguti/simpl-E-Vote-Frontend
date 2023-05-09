@@ -1,5 +1,6 @@
 import React from "react";
 import VoterButton from "./VoterButton";
+import { Link } from "react-router-dom";
 function ElectionList(props) {
   return (
     <div className="w-full">
@@ -10,7 +11,23 @@ function ElectionList(props) {
           </h1>
           <h1 className="mt-5 py-2  font-sans font-bold intro text-lg  text-gray-600">
             Organizer:{" "}
-            <span className="text-blue-900 font-light">{props.organizer}</span>
+            {props.networkId === 11155111 ? (
+              <Link
+                to={`https://sepolia.etherscan.io/address/${props.organizer}`}
+              >
+                <span className="text-blue-900 font-light">
+                  {props.organizer}
+                </span>{" "}
+              </Link>
+            ) : (
+              <Link
+                to={`https://mumbai.polygonscan.com/address/${props.organizer}`}
+              >
+                <span className="text-blue-900 font-light">
+                  {props.organizer}
+                </span>{" "}
+              </Link>
+            )}
           </h1>
           <h1 className="mt-5 py-2  font-sans font-bold  intro text-lg  text-gray-600">
             Network:{" "}

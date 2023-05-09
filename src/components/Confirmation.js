@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import confirmpic from "../pics/confirm.png";
+import Button from "./Button";
 function Confirmation(props) {
   return (
     <div className="flex justify-evenly">
@@ -8,7 +10,7 @@ function Confirmation(props) {
         alt="voting pic"
         className="  object-fill  h-80 mt-40 ml-40 "
       />
-      <div className="h-96 bg-white w-1/3 text-center m-auto rounded-full shadow-lg shadow-slate-300 ">
+      <div className=" h-max bg-white w-1/3 text-center m-auto rounded-full shadow-lg shadow-slate-300 ">
         <h1 className="mt-20 text-3xl intro font-bold text-gray-800">
           Dear <span className="text-blue-600">{props.person}</span>
         </h1>
@@ -24,6 +26,11 @@ function Confirmation(props) {
         <h1 className="mt-2 text-2xl intro text-slate-500">
           once it is ended...!
         </h1>
+        <div className="mb-4">
+          <Link to="/">
+            <Button content="Go To Home" color="yellow" />
+          </Link>
+        </div>
       </div>
       <img
         src={confirmpic}

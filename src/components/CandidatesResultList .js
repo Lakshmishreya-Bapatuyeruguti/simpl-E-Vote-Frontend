@@ -22,6 +22,8 @@ function CandidatesResultList(props) {
         );
         const length = totalCandidates.toNumber();
         let candidatesResultsList = [];
+        localStorage.setItem("highest", 0);
+
         for (let index = 0; index < length; index++) {
           let { name, candidateAddress, party, votesGained } =
             await contract.displayCandidateResults(
@@ -29,7 +31,11 @@ function CandidatesResultList(props) {
               organizerIdSelected - 1,
               index
             );
-          console.log(name, candidateAddress, party, votesGained.toNumber());
+          let winner = localStorage.getItem("highest");
+          if (votesGained.toNumber() >= winner) {
+            localStorage.setItem("highest", votesGained.toNumber());
+          }
+          console.log(name, candidateAddress, party);
           candidatesResultsList.push({
             name: name,
             address: candidateAddress,
@@ -65,6 +71,9 @@ function CandidatesResultList(props) {
               votes={candidate.votes}
               results={props.results}
               organizer={currentOrganizer}
+              isWinner={
+                localStorage.getItem("highest") == candidate.votes ? "Y" : "N"
+              }
             />
             <img
               src={votingpic}

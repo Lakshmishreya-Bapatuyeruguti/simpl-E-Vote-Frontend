@@ -12,6 +12,7 @@ function CandidatesList(props) {
     async function showCandidatesDetails() {
       try {
         const { contract, signerAddress } = await contractInstance();
+
         const organizerSelected = localStorage.getItem("current organizer");
         const organizerIdSelected = localStorage.getItem("current organizerId");
         setCandidatesInfoList([]);
