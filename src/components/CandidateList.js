@@ -16,6 +16,7 @@ function CandidateList(props) {
           </h1>
           <h1 className="mt-4 py-2  font-sans font-light intro text-lg text-blue-900 ">
             <span className="text-gray-600"> Address:</span>
+            {/* eslint-disable-next-line eqeqeq*/}
             {localStorage.getItem("nid") == 11155111 ? (
               <Link
                 to={`https://sepolia.etherscan.io/address/${props.address}`}

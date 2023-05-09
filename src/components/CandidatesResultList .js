@@ -72,6 +72,7 @@ function CandidatesResultList(props) {
               results={props.results}
               organizer={currentOrganizer}
               isWinner={
+                /* eslint-disable-next-line eqeqeq*/
                 localStorage.getItem("highest") == candidate.votes ? "Y" : "N"
               }
             />
