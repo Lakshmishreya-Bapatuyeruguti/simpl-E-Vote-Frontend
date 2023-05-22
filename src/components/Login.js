@@ -1,33 +1,38 @@
-import { React, useContext } from "react";
-import login from "../pics/loginicon1.png";
-import { AppContext } from "../App";
-import { ethers } from "ethers";
-import { useNavigate } from "react-router-dom";
-import clipboardpic from "../pics/clipboard.png";
+import { React, useContext } from 'react';
+import login from '../pics/loginicon1.png';
+import { AppContext } from '../App';
+import { ethers } from 'ethers';
+import { useNavigate } from 'react-router-dom';
+import clipboardpic from '../pics/clipboard.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Login() {
   const { connectedAccount, setConnectedAccount } = useContext(AppContext);
   const trimmedConnectedAccount = connectedAccount.slice(0, 10);
   const navigate = useNavigate();
 
-  window.ethereum.on("accountsChanged", async () => {
+  window.ethereum.on('accountsChanged', async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
+    await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
     setConnectedAccount(await signer.getAddress());
   });
 
-  window.ethereum.on("chainChanged", async () => {
+  window.ethereum.on('chainChanged', async () => {
     window.location.reload();
-    navigate("/");
+    navigate('/');
   });
 
-  const fromStorageAccount = localStorage.getItem("connected address");
+  const fromStorageAccount = localStorage.getItem('connected address');
   const trimmedStorageAccount =
     fromStorageAccount && fromStorageAccount.slice(0, 10);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(fromStorageAccount);
-    alert("Address copied to clipboard!");
+    toast.success('Address copied to clipboard!', {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   return (
@@ -46,6 +51,7 @@ function Login() {
         className="h-4 m-auto"
         onClick={copyToClipboard}
       />
+      <ToastContainer />
     </div>
   );
 }
