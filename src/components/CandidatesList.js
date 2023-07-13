@@ -1,54 +1,14 @@
-import { React, useContext, useEffect } from "react";
-import CandidateList from "./CandidateList";
-import { AppContext } from "../App";
-import votingpic from "../pics/voting.png";
-import contractInstance from "../contractInstance";
+import { useEffect } from 'react';
+import CandidateList from './CandidateList';
+import { useCandidatesList } from '../custom-hooks/useCandidatesList';
+import votingpic from '../pics/voting.png';
+
 function CandidatesList(props) {
-  const { candidatesInfoList, currentOrganizer, setCandidatesInfoList } =
-    useContext(AppContext);
-
+  const { currentOrganizer, candidatesInfoList, displayCandidatesInfo } =
+    useCandidatesList();
   useEffect(() => {
-    // Displaying Candidates of particular election
-    async function showCandidatesDetails() {
-      try {
-        const { contract, signerAddress } = await contractInstance();
-
-        const organizerSelected = localStorage.getItem("current organizer");
-        const organizerIdSelected = localStorage.getItem("current organizerId");
-        setCandidatesInfoList([]);
-        localStorage.setItem("connected address", signerAddress);
-        const { totalCandidates } = await contract.displayCandidateDetails(
-          organizerSelected,
-          organizerIdSelected - 1,
-          0
-        );
-        const length = totalCandidates.toNumber();
-        let candidatesList = [];
-        for (let index = 0; index < length; index++) {
-          let { name, candidateAddress, party } =
-            await contract.displayCandidateDetails(
-              organizerSelected,
-              organizerIdSelected - 1,
-              index
-            );
-          if (length > 0) {
-            candidatesList.push({
-              name: name,
-              address: candidateAddress,
-              party: party,
-            });
-          }
-        }
-        if (length > 0) {
-          console.log("NOT EMPTY");
-          setCandidatesInfoList(candidatesList);
-        }
-      } catch (error) {
-        console.log("Err at showCandidatesDetails()", error);
-      }
-    }
-    showCandidatesDetails();
-  }, [setCandidatesInfoList]);
+    displayCandidatesInfo();
+  }, []);
 
   return (
     <div className=" w-5/6 ml-10 ">

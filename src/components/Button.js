@@ -67,18 +67,18 @@ function Button(props) {
         });
       }
       console.log(
-        name,
-        age,
-        candidateParty,
-        address,
+        name.current.value,
+        age.current.value,
+        candidateParty.current.value,
+        address.current.value,
         organizerConnected,
         listSize,
       );
       const addCandidateTx = await contract.setCandidate(
-        name,
-        age,
-        candidateParty,
-        address,
+        name.current.value,
+        age.current.value,
+        candidateParty.current.value,
+        address.current.value,
         organizerConnected,
         listSize,
       );
@@ -132,19 +132,19 @@ function Button(props) {
       <button
         className={`rounded-none bg-${props.color}-300 h-16 w-60 text-2xl mt-10 ml-16 mr-12 text-center shadow-md shadow-yellow-400 font-serif hover:bg-yellow-200 `}
         onClick={() => {
-          if (props.voterlogin === 'true') {
+          if (props.voterlogin === true) {
             navigateTo();
           }
-          if (props.organizerlogin === 'true') {
+          if (props.organizerlogin === true) {
             navigateTo();
           }
-          if (props.asorganizer === 'true') {
+          if (props.asorganizer === true) {
             addOrganizer();
           }
-          if (props.addcandidate === 'true') {
+          if (props.addcandidate === true) {
             addCandidate();
           }
-          if (props.confirmstart === 'true') {
+          if (props.confirmstart === true) {
             electionBegins();
           }
         }}

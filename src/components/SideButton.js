@@ -1,7 +1,6 @@
-import React from "react";
+import React from 'react';
 
 function SideButton(props) {
-  console.log(props.color, "................");
   return (
     <div>
       <button

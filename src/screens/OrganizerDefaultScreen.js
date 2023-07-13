@@ -1,65 +1,20 @@
-import { React, useContext, useEffect } from "react";
-import organizerpic from "../pics/organizer.png";
-import Button from "../components/Button";
-import Login from "../components/Login";
-import { AppContext } from "../App";
-import ElectionList from "../components/ElectionList";
-import Loading from "../components/Loading";
-import contractInstance from "../contractInstance";
+import organizerpic from '../pics/organizer.png';
+import Button from '../components/Button';
+import Login from '../components/Login';
+import { memo, useEffect } from 'react';
+import ElectionList from '../components/ElectionList';
+import Loading from '../components/Loading';
+import { useElectionsList } from '../custom-hooks/useElectionsList';
+import NoOrganizersUI from '../components/NoOrganizersUI';
+
 function OrganizerDefaultScreen() {
-  const {
-    organizersListMumbai,
-    connectedAccount,
-    organizersListSepolia,
-    setConnectedAccount,
-    setIsLoading,
-    setOrganizersListMumbai,
-    setOrganizersListSepolia,
-    isLoading,
-  } = useContext(AppContext);
-  const organizersList = [...organizersListMumbai, ...organizersListSepolia];
+  const { organizersList, displayElections, connectedAccount, isLoading } =
+    useElectionsList();
   let organizerFound = false;
   let count = 1;
-
   useEffect(() => {
-    // Displaying Organizers of Particular Network
-    async function displayOrganizers() {
-      try {
-        const { contract, networkId, signerAddress } = await contractInstance();
-        setIsLoading(true);
-        console.log(signerAddress);
-        setConnectedAccount(signerAddress);
-        localStorage.setItem("connected address", signerAddress);
-        const fromStorageAccount = localStorage.getItem("connected address");
-        setConnectedAccount(fromStorageAccount);
-        let length = await contract.organizersCount();
-        let recievedOrganizersList = [];
-        for (let i = 0; i < length; i++) {
-          let organizer = await contract.organizersList(i);
-          const { started, ended } = await contract.checkStatusOfElection(
-            organizer,
-            i
-          );
-          recievedOrganizersList.push({ organizer, started, ended, networkId });
-        }
-        if (networkId === 11155111) {
-          await setOrganizersListSepolia(recievedOrganizersList);
-        } else {
-          await setOrganizersListMumbai(recievedOrganizersList);
-        }
-        setIsLoading(false);
-      } catch (error) {
-        console.log("Err at displayOrganizers()", error);
-      }
-    }
-    displayOrganizers();
-  }, [
-    setConnectedAccount,
-    setIsLoading,
-    setOrganizersListMumbai,
-    setOrganizersListSepolia,
-  ]);
-
+    displayElections();
+  }, [connectedAccount, displayElections]);
   return (
     <div>
       <Login />
@@ -97,7 +52,7 @@ function OrganizerDefaultScreen() {
                             organizer={organizer.organizer}
                             started={organizer.started}
                             ended={organizer.ended}
-                            default="true"
+                            default={true}
                             networkId={organizer.networkId}
                           />
                         </div>
@@ -117,7 +72,7 @@ function OrganizerDefaultScreen() {
                           organizer={organizer.organizer}
                           started={organizer.started}
                           ended={organizer.ended}
-                          default="true"
+                          default={true}
                           networkId={organizer.networkId}
                           key={key}
                         />
@@ -127,40 +82,13 @@ function OrganizerDefaultScreen() {
                 }
                 return null;
               })}
-            {!organizerFound && (
-              <div>
-                <div className=" w-1/2  px-4 m-auto  rounded-full shadow-md shadow-slate-300 text-center ">
-                  <h1 className="text-4xl font-sans mt-10  intro py-4">
-                    Hello <span className="text-blue-900">Organiser</span>
-                  </h1>
-                  <img
-                    src={organizerpic}
-                    alt="organizer pic"
-                    className="  object-fill m-auto h-40 mt-2 "
-                  />
-                  <h1 className=" py-6 font-sans font-semibold intro text-3xl text-yellow-500">
-                    You have no elections scheduled yet....!!!
-                  </h1>
-                  <h1 className="  font-sans font-light intro text-2xl text-gray-400">
-                    Join as organizer and start the election process
-                  </h1>
-                  <div className="pb-4">
-                    <Button
-                      content={"Start New Election"}
-                      path="/organizerdefault/addcandidates"
-                      asorganizer="true"
-                      color="yellow"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            {!organizerFound && <NoOrganizersUI />}
             {organizerFound && (
               <div className="w-full m-auto text-center ">
                 <Button
-                  content={"Organize New Election"}
+                  content={'Organize New Election'}
                   path="/organizerdefault/addcandidates"
-                  asorganizer="true"
+                  asorganizer={true}
                   color="yellow"
                 />
               </div>
@@ -172,4 +100,4 @@ function OrganizerDefaultScreen() {
   );
 }
 
-export default OrganizerDefaultScreen;
+export default memo(OrganizerDefaultScreen);

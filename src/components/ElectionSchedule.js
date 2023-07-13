@@ -1,8 +1,8 @@
-import { React } from "react";
-import Button from "./Button";
+import { React } from 'react';
+import Button from './Button';
 
 function ElectionSchedule() {
-  const organizerConnected = localStorage.getItem("connected address");
+  const organizerConnected = localStorage.getItem('connected address');
 
   return (
     <div>
@@ -26,10 +26,10 @@ function ElectionSchedule() {
       </div>
       <div className=" ml-64">
         <Button
-          content={"Start Election"}
+          content={'Start Election'}
           color="yellow"
           path="/electionconfirmation"
-          confirmstart="true"
+          confirmstart={true}
         />
       </div>
     </div>

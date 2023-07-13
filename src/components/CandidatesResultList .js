@@ -1,55 +1,14 @@
-import { React, useContext, useEffect } from "react";
-import CandidateList from "./CandidateList";
-import { AppContext } from "../App";
-import votingpic from "../pics/voting.png";
-import contractInstance from "../contractInstance";
+import { useEffect } from 'react';
+import CandidateList from './CandidateList';
+import { useCandidatesList } from '../custom-hooks/useCandidatesList';
+import votingpic from '../pics/voting.png';
+
 function CandidatesResultList(props) {
-  const { candidatesInfoList, currentOrganizer, setCandidatesInfoList } =
-    useContext(AppContext);
-
+  const { currentOrganizer, candidatesInfoList, displayCandidatesInfo } =
+    useCandidatesList(true);
   useEffect(() => {
-    // Showing Results Of Particular Election
-    async function showResults() {
-      try {
-        const { contract } = await contractInstance();
-        const organizerSelected = localStorage.getItem("current organizer");
-        const organizerIdSelected = localStorage.getItem("current organizerId");
-        setCandidatesInfoList([]);
-        const { totalCandidates } = await contract.displayCandidateDetails(
-          organizerSelected,
-          organizerIdSelected - 1,
-          0
-        );
-        const length = totalCandidates.toNumber();
-        let candidatesResultsList = [];
-        localStorage.setItem("highest", 0);
-
-        for (let index = 0; index < length; index++) {
-          let { name, candidateAddress, party, votesGained } =
-            await contract.displayCandidateResults(
-              organizerSelected,
-              organizerIdSelected - 1,
-              index
-            );
-          let winner = localStorage.getItem("highest");
-          if (votesGained.toNumber() >= winner) {
-            localStorage.setItem("highest", votesGained.toNumber());
-          }
-          console.log(name, candidateAddress, party);
-          candidatesResultsList.push({
-            name: name,
-            address: candidateAddress,
-            party: party,
-            votes: votesGained.toNumber(),
-          });
-        }
-        setCandidatesInfoList(candidatesResultsList);
-      } catch (error) {
-        console.log("Err at showResult()", error);
-      }
-    }
-    showResults();
-  }, [setCandidatesInfoList]);
+    displayCandidatesInfo();
+  }, []);
 
   return (
     <div className=" w-5/6 ml-10 ">
@@ -73,7 +32,7 @@ function CandidatesResultList(props) {
               organizer={currentOrganizer}
               isWinner={
                 /* eslint-disable-next-line eqeqeq*/
-                localStorage.getItem("highest") == candidate.votes ? "Y" : "N"
+                localStorage.getItem('highest') == candidate.votes ? 'Y' : 'N'
               }
             />
             <img

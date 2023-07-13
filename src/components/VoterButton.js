@@ -80,18 +80,18 @@ function VoterButton(props) {
       <button
         className={`rounded-lg ${props.color} h-12 w-40 text-2xl mt-4  text-center shadow-md shadow-gray-500 font-serif 2xl:h-10 2xl:w-30 ${props.colorhover} ${props.textcolor}`}
         onClick={() => {
-          if (props.showcandidatelist === 'true') {
+          if (props.showcandidatelist) {
             setCurrentOrganizerId(props.id);
             setCurrentOrganizer(props.organizer);
             localStorage.setItem('current organizer', props.organizer);
             localStorage.setItem('current organizerId', props.id);
             navigateTo();
           }
-          if (props.vote === 'true') {
+          if (props.vote) {
             setCurrentOrganizerId(props.id);
             addVote();
           }
-          if (props.results === 'true') {
+          if (props.results) {
             setCurrentOrganizerId(props.id);
             setCurrentOrganizer(props.organizer);
             localStorage.setItem('current organizer', props.organizer);
@@ -99,7 +99,7 @@ function VoterButton(props) {
 
             navigateTo();
           }
-          if (props.electionends === 'true') {
+          if (props.electionends) {
             setCurrentOrganizerId(props.id);
             electionEnds();
           }
