@@ -1,17 +1,21 @@
+import { useState, createContext, useRef, lazy, Suspense } from 'react';
 import './App.css';
 import HomeScreen from './screens/HomeScreen';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoandTitle from './components/LogoandTitle';
-import AddCandidatesScreen from './screens/AddCandidatesScreen';
-import VotersDefaultScreen from './screens/VotersDefaultScreen';
 import Footer from './components/Footer';
-import ScheduleElection from './screens/ScheduleElection';
-import { useState, createContext, useRef } from 'react';
-import VotingScreen from './screens/VotingScreen';
-import ResultsScreen from './screens/ResultsScreen';
-import ConfirmationScreen from './screens/ConfirmationScreen';
 import Test from './screens/Test';
-import OrganizerDefaultScreen from './screens/OrganizerDefaultScreen';
+import Loading from './components/Loading';
+const OrganizerDefaultScreen = lazy(() =>
+  import('./screens/OrganizerDefaultScreen'),
+);
+const AddCandidatesScreen = lazy(() => import('./screens/AddCandidatesScreen'));
+const ScheduleElection = lazy(() => import('./screens/ScheduleElection'));
+const ConfirmationScreen = lazy(() => import('./screens/ConfirmationScreen'));
+const VotersDefaultScreen = lazy(() => import('./screens/VotersDefaultScreen'));
+const VotingScreen = lazy(() => import('./screens/VotingScreen'));
+const ResultsScreen = lazy(() => import('./screens/ResultsScreen'));
+
 export const AppContext = createContext();
 
 function App() {
@@ -56,45 +60,47 @@ function App() {
       >
         <BrowserRouter>
           <LogoandTitle />
-          <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route
-              path="/organizerdefault"
-              element={<OrganizerDefaultScreen />}
-            />
-            <Route
-              path="/organizerdefault/addcandidates"
-              element={<AddCandidatesScreen />}
-            />
-            <Route path="/voterdefault" element={<VotersDefaultScreen />} />
-            <Route
-              path="/organizerdefault/scheduleelection"
-              element={<ScheduleElection />}
-            />
-            <Route path="/voters/voting" element={<VotingScreen />} />
-            <Route path="/electionresults" element={<ResultsScreen />} />
-            <Route
-              path="/electionconfirmation"
-              element={
-                <ConfirmationScreen
-                  person="Organizer"
-                  task="scheduling election"
-                  activity="election"
-                />
-              }
-            />
-            <Route
-              path="/votingconfirmation"
-              element={
-                <ConfirmationScreen
-                  person="Voter"
-                  task="voting"
-                  activity="vote"
-                />
-              }
-            />
-            <Route path="/test" element={<Test />} />
-          </Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<HomeScreen />} />
+              <Route
+                path="/organizerdefault"
+                element={<OrganizerDefaultScreen />}
+              />
+              <Route
+                path="/organizerdefault/addcandidates"
+                element={<AddCandidatesScreen />}
+              />
+              <Route path="/voterdefault" element={<VotersDefaultScreen />} />
+              <Route
+                path="/organizerdefault/scheduleelection"
+                element={<ScheduleElection />}
+              />
+              <Route path="/voters/voting" element={<VotingScreen />} />
+              <Route path="/electionresults" element={<ResultsScreen />} />
+              <Route
+                path="/electionconfirmation"
+                element={
+                  <ConfirmationScreen
+                    person="Organizer"
+                    task="scheduling election"
+                    activity="election"
+                  />
+                }
+              />
+              <Route
+                path="/votingconfirmation"
+                element={
+                  <ConfirmationScreen
+                    person="Voter"
+                    task="voting"
+                    activity="vote"
+                  />
+                }
+              />
+              <Route path="/test" element={<Test />} />
+            </Routes>
+          </Suspense>
           <Footer />
         </BrowserRouter>
       </AppContext.Provider>
