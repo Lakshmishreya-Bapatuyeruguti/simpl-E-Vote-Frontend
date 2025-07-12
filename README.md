@@ -1,5 +1,5 @@
-# Simpl-e Vote React Frontend Assignment 
-### Done By- Lakshmishreya Bapatuyeruguti - Blockchain Trainee 2023
+# Simpl-e Vote React Based Blockchain App
+
 #### Features
 - Multple organizers can start elections
 - Each organizer can start multiple elections
